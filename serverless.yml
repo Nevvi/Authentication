@@ -1,11 +1,27 @@
 service:
   name: authentication
 
+plugins:
+  - serverless-domain-manager
+
+custom:
+  environment: ${env:ENVIRONMENT_NAME, 'development'}
+  domainNameMap:
+    default: api.${env:ENVIRONMENT_NAME}.nevvi.net
+    production: api.nevvi.net
+  basePathMap:
+    release: authentication
+    default: ${self:provider.stage}-authentication
+  customDomain:
+    domainName: ${self:custom.domainNameMap.${self:custom.environment}, self:custom.domainNameMap.default}
+    basePath: ${self:custom.basePathMap.${self:provider.stage}, self:custom.basePathMap.default}
+
 provider:
   name: aws
   runtime: nodejs12.x
   stage: ${opt:stage, 'release'}
   region: ${opt:region, 'us-east-1'}
+  apiName: authentication-${self:custom.environment}-${self:provider.stage}
 
 functions:
   test:

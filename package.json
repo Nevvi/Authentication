@@ -14,5 +14,8 @@
   "bugs": {
     "url": "https://github.com/Nevvi/Authentication/issues"
   },
-  "homepage": "https://github.com/Nevvi/Authentication#readme"
+  "homepage": "https://github.com/Nevvi/Authentication#readme",
+  "devDependencies": {
+    "serverless-domain-manager": "~3.3.2"
+  }
 }

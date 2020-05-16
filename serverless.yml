@@ -22,6 +22,10 @@ provider:
   stage: ${opt:stage, 'release'}
   region: ${opt:region, 'us-east-1'}
   apiName: authentication-${self:custom.environment}-${self:provider.stage}
+  stackName: authentication-${self:custom.environment}-${self:provider.stage}
+  deploymentBucket:
+    name: nevvi-serverless-deployment-bucket
+  deploymentPrefix: ${self:custom.environment}
 
 functions:
   test:

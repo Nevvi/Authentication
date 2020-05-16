@@ -1,0 +1,16 @@
+service:
+  name: authentication
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: ${opt:stage, 'release'}
+  region: ${opt:region, 'us-east-1'}
+
+functions:
+  test:
+    handler: src/functions/Test.test
+    events:
+      - http:
+          path: /
+          method: get

@@ -16,9 +16,7 @@ jobs:
         aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws configure set default.region us-east-1
     - name: Initialize
-      uses: actions/npm@master
-      with:
-        args: install
+      run: npm install
     - uses: serverless/github-action@master
       with:
         args: deploy

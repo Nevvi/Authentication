@@ -40,12 +40,18 @@ module.exports.register = async (event) => {
         }).promise()
         return {
             statusCode: 200,
-            body: JSON.stringify(registerResponse)
+            body: JSON.stringify(registerResponse),
+            headers: {
+                'Access-Control-Allow-Origin': '*'
+            }
         }
     } catch (e) {
         return {
             statusCode: e.statusCode || 500,
-            body: JSON.stringify(e.message)
+            body: JSON.stringify(e.message),
+            headers: {
+                'Access-Control-Allow-Origin': '*'
+            }
         }
     }
 }
@@ -64,12 +70,18 @@ module.exports.login = async (event) => {
         }).promise()
         return {
             statusCode: 200,
-            body: JSON.stringify(loginResponse)
+            body: JSON.stringify(loginResponse),
+            headers: {
+                'Access-Control-Allow-Origin': '*'
+            }
         }
     } catch (e) {
         return {
             statusCode: e.statusCode || 500,
-            body: JSON.stringify(e.message)
+            body: JSON.stringify(e.message),
+            headers: {
+                'Access-Control-Allow-Origin': '*'
+            }
         }
     }
 }

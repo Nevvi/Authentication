@@ -34,3 +34,7 @@ functions:
       - http:
           path: /
           method: get
+
+  # Cognito Triggers
+  preSignUpTrigger:
+    handler: src/functions/CognitoTriggers.preSignUp

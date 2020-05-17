@@ -39,6 +39,12 @@ functions:
       - http:
           path: /v1/register
           method: post
+  login:
+    handler: src/functions/AuthHandler.login
+    events:
+      - http:
+          path: /v1/login
+          method: post
 
   # Cognito Triggers
   preSignUpTrigger:

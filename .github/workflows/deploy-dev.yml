@@ -19,8 +19,7 @@ jobs:
       run: npm install
     - uses: serverless/github-action@master
       with:
-        args: deploy
+        args: deploy --stage development
       env:
-        ENVIRONMENT_NAME: development
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

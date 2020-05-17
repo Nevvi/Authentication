@@ -5,6 +5,9 @@ plugins:
   - serverless-domain-manager
 
 custom:
+  publicUserPoolClientMap:
+    default: ${ssm:/nevvi/cognito/nevvi-development-public-users/clients/authentication/id}
+    production: ${ssm:/nevvi/cognito/nevvi-public-users/clients/authentication/id}
   domainNameMap:
     default: api.development.nevvi.net
     production: api.nevvi.net
@@ -26,14 +29,16 @@ provider:
   deploymentBucket:
     name: nevvi-serverless-deployment-bucket
   deploymentPrefix: ${self:provider.stage}
+  environment:
+    PUBLIC_USER_POOL_CLIENT_ID: ${self:custom.publicUserPoolClientMap.${self:provider.stage}, self:custom.publicUserPoolClientMap.default}
 
 functions:
-  test:
-    handler: src/functions/Test.test
+  register:
+    handler: src/functions/AuthHandler.register
     events:
       - http:
-          path: /
-          method: get
+          path: /v1/register
+          method: post
 
   # Cognito Triggers
   preSignUpTrigger:

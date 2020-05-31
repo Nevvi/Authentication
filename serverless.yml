@@ -39,15 +39,6 @@ functions:
       - http:
           path: /v1/register
           method: post
-          origin: '*'
-          headers:
-            - Content-Type
-            - X-Amz-Date
-            - Authorization
-            - AccessToken
-            - X-Api-Key
-            - X-Amz-Security-Token
-            - X-Amz-User-Agent
 
   login:
     handler: src/functions/AuthHandler.login
@@ -55,15 +46,6 @@ functions:
       - http:
           path: /v1/login
           method: post
-          origin: '*'
-          headers:
-            - Content-Type
-            - X-Amz-Date
-            - Authorization
-            - AccessToken
-            - X-Api-Key
-            - X-Amz-Security-Token
-            - X-Amz-User-Agent
 
   logout:
     handler: src/functions/AuthHandler.logout
@@ -71,29 +53,7 @@ functions:
       - http:
           path: /v1/logout
           method: post
-          cors:
-            origin: '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - AccessToken
-              - X-Api-Key
-              - X-Amz-Security-Token
-              - X-Amz-User-Agent
 
   # Cognito Triggers
   preSignUpTrigger:
     handler: src/functions/CognitoTriggers.preSignUp
-
-resources:
-  Resources:
-    GatewayResponseDefault4XX:
-      Type: 'AWS::ApiGateway::GatewayResponse'
-      Properties:
-        ResponseParameters:
-          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
-          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
-        ResponseType: DEFAULT_4XX
-        RestApiId:
-          Ref: 'ApiGatewayRestApi'

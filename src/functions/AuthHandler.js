@@ -78,11 +78,6 @@ module.exports.logout = async (event) => {
 function createResponse(statusCode, body) {
     return {
         statusCode: statusCode || 500,
-        body: JSON.stringify(body),
-        headers: {
-            'Access-Control-Allow-Origin': '*',
-            "Access-Control-Allow-Credentials" : true,
-            'Access-Control-Allow-Headers': 'AccessToken, Authorization'
-        }
+        body: JSON.stringify(body)
     }
 }

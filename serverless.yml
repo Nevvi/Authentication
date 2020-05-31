@@ -48,6 +48,14 @@ functions:
           method: post
           cors: true
 
+  logout:
+    handler: src/functions/AuthHandler.logout
+    events:
+      - http:
+          path: /v1/logout
+          method: post
+          cors: true
+
   # Cognito Triggers
   preSignUpTrigger:
     handler: src/functions/CognitoTriggers.preSignUp

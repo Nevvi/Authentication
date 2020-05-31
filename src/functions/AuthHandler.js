@@ -64,9 +64,10 @@ module.exports.login = async (event) => {
 
 module.exports.logout = async (event) => {
     try{
-        const {AccessToken} = event.headers
+        console.log(event)
+        const accessToken = event.headers.AccessToken || event.headers.accesstoken
         const logoutResponse = await Cognito.globalSignOut({
-            AccessToken,
+            AccessToken: accessToken,
         }).promise()
         return createResponse(200, logoutResponse)
     } catch (e) {
@@ -80,7 +81,8 @@ function createResponse(statusCode, body) {
         body: JSON.stringify(body),
         headers: {
             'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Headers': 'Authorization,AccessToken'
+            "Access-Control-Allow-Credentials" : true,
+            'Access-Control-Allow-Headers': 'AccessToken, Authorization'
         }
     }
 }

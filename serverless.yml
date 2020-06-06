@@ -39,14 +39,20 @@ functions:
       - http:
           path: /v1/register
           method: post
-          cors: true
+
   login:
     handler: src/functions/AuthHandler.login
     events:
       - http:
           path: /v1/login
           method: post
-          cors: true
+
+  logout:
+    handler: src/functions/AuthHandler.logout
+    events:
+      - http:
+          path: /v1/logout
+          method: post
 
   # Cognito Triggers
   preSignUpTrigger:

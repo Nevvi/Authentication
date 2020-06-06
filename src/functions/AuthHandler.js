@@ -38,21 +38,9 @@ module.exports.register = async (event) => {
             Password: body.password,
             Username: body.username
         }).promise()
-        return {
-            statusCode: 200,
-            body: JSON.stringify(registerResponse),
-            headers: {
-                'Access-Control-Allow-Origin': '*'
-            }
-        }
+        return createResponse(200, registerResponse)
     } catch (e) {
-        return {
-            statusCode: e.statusCode || 500,
-            body: JSON.stringify(e.message),
-            headers: {
-                'Access-Control-Allow-Origin': '*'
-            }
-        }
+        return createResponse(e.statusCode, e.message)
     }
 }
 
@@ -68,20 +56,28 @@ module.exports.login = async (event) => {
                 USERNAME: body.username
             },
         }).promise()
-        return {
-            statusCode: 200,
-            body: JSON.stringify(loginResponse),
-            headers: {
-                'Access-Control-Allow-Origin': '*'
-            }
-        }
+        return createResponse(200, loginResponse)
     } catch (e) {
-        return {
-            statusCode: e.statusCode || 500,
-            body: JSON.stringify(e.message),
-            headers: {
-                'Access-Control-Allow-Origin': '*'
-            }
-        }
+        return createResponse(e.statusCode, e.message)
+    }
+}
+
+module.exports.logout = async (event) => {
+    try{
+        console.log(event)
+        const accessToken = event.headers.AccessToken || event.headers.accesstoken
+        const logoutResponse = await Cognito.globalSignOut({
+            AccessToken: accessToken,
+        }).promise()
+        return createResponse(200, logoutResponse)
+    } catch (e) {
+        return createResponse(e.statusCode, e.message)
+    }
+}
+
+function createResponse(statusCode, body) {
+    return {
+        statusCode: statusCode || 500,
+        body: JSON.stringify(body)
     }
 }

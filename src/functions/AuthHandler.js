@@ -1,43 +1,18 @@
 'use strict';
 
-const AWS = require('aws-sdk')
-const Joi = require('joi');
+const RegisterRequest = require('../model/request/RegisterRequest')
+const LoginRequest = require('../model/request/LoginRequest')
+const LogoutRequest = require('../model/request/LogoutRequest')
 
-class InvalidRequestError extends Error {
-    constructor(message) {
-        super(message)
-        this.statusCode = 400;
-    }
-}
-
-const registerSchema = {
-    username: Joi.string().required(),
-    password: Joi.string().required()
-}
-
-const loginSchema = {
-    username: Joi.string().required(),
-    password: Joi.string().required()
-}
-
-const validate = (schema, json) => {
-    const {error} = Joi.object().keys(schema).validate(json, {convert: false, stripUnknown: true})
-    if (error) {
-        throw new InvalidRequestError(error.message)
-    }
-}
-
-const Cognito = new AWS.CognitoIdentityServiceProvider()
+const AuthenticationService = require('../service/AuthenticationService')
+const authenticationService = new AuthenticationService()
 
 module.exports.register = async (event) => {
     try{
         const body = typeof event.body === 'object' ? event.body : JSON.parse(event.body)
-        validate(registerSchema, body)
-        const registerResponse = await Cognito.signUp({
-            ClientId: process.env.PUBLIC_USER_POOL_CLIENT_ID,
-            Password: body.password,
-            Username: body.username
-        }).promise()
+        const request = new RegisterRequest(body)
+        request.validate()
+        const registerResponse = await authenticationService.register(request)
         return createResponse(200, registerResponse)
     } catch (e) {
         return createResponse(e.statusCode, e.message)
@@ -47,15 +22,9 @@ module.exports.register = async (event) => {
 module.exports.login = async (event) => {
     try{
         const body = typeof event.body === 'object' ? event.body : JSON.parse(event.body)
-        validate(loginSchema, body)
-        const loginResponse = await Cognito.initiateAuth({
-            AuthFlow: 'USER_PASSWORD_AUTH',
-            ClientId: process.env.PUBLIC_USER_POOL_CLIENT_ID,
-            AuthParameters: {
-                PASSWORD: body.password,
-                USERNAME: body.username
-            },
-        }).promise()
+        const request = new LoginRequest(body)
+        request.validate()
+        const loginResponse = await authenticationService.login(request)
         return createResponse(200, loginResponse)
     } catch (e) {
         return createResponse(e.statusCode, e.message)
@@ -64,11 +33,10 @@ module.exports.login = async (event) => {
 
 module.exports.logout = async (event) => {
     try{
-        console.log(event)
         const accessToken = event.headers.AccessToken || event.headers.accesstoken
-        const logoutResponse = await Cognito.globalSignOut({
-            AccessToken: accessToken,
-        }).promise()
+        const request = new LogoutRequest(accessToken)
+        request.validate()
+        const logoutResponse = await authenticationService.logout(request)
         return createResponse(200, logoutResponse)
     } catch (e) {
         return createResponse(e.statusCode, e.message)

@@ -16,7 +16,9 @@
   },
   "homepage": "https://github.com/Nevvi/Authentication#readme",
   "devDependencies": {
-    "serverless-domain-manager": "~3.3.2"
+    "serverless-domain-manager": "~3.3.2",
+    "serverless-webpack": "^5.3.2",
+    "webpack": "^4.43.0"
   },
   "dependencies": {
     "aws-sdk": "^2.678.0",

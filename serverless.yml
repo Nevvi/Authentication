@@ -2,6 +2,7 @@ service:
   name: authentication
 
 plugins:
+  - serverless-webpack
   - serverless-domain-manager
 
 custom:

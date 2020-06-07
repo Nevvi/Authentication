@@ -9,6 +9,7 @@ const authenticationService = new AuthenticationService()
 
 module.exports.register = async (event) => {
     try{
+        console.log("Received request to create an account")
         const body = typeof event.body === 'object' ? event.body : JSON.parse(event.body)
         const request = new RegisterRequest(body)
         request.validate()
@@ -21,6 +22,7 @@ module.exports.register = async (event) => {
 
 module.exports.login = async (event) => {
     try{
+        console.log("Received request to login")
         const body = typeof event.body === 'object' ? event.body : JSON.parse(event.body)
         const request = new LoginRequest(body)
         request.validate()
@@ -33,6 +35,7 @@ module.exports.login = async (event) => {
 
 module.exports.logout = async (event) => {
     try{
+        console.log("Received request to logout")
         const accessToken = event.headers.AccessToken || event.headers.accesstoken
         const request = new LogoutRequest(accessToken)
         request.validate()

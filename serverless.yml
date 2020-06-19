@@ -2,10 +2,14 @@ service:
   name: authentication
 
 plugins:
+  - serverless-prune-plugin
   - serverless-webpack
   - serverless-domain-manager
 
 custom:
+  prune:
+    automatic: true
+    number: 2
   publicUserPoolClientMap:
     default: ${ssm:/nevvi/cognito/nevvi-development-public-users/clients/authentication/id}
     production: ${ssm:/nevvi/cognito/nevvi-public-users/clients/authentication/id}
@@ -32,6 +36,7 @@ provider:
   deploymentPrefix: ${self:provider.stage}
   environment:
     PUBLIC_USER_POOL_CLIENT_ID: ${self:custom.publicUserPoolClientMap.${self:provider.stage}, self:custom.publicUserPoolClientMap.default}
+    USER_API_URL: https://${self:custom.domainNameMap.${self:provider.stage}, self:custom.domainNameMap.default}/user
 
 functions:
   register:

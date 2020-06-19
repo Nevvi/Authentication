@@ -20,7 +20,14 @@ module.exports = class AuthenticationService {
     }
 
     async login(loginRequest) {
-        return await this.authenticationDao.login(loginRequest)
+        const authResult = await this.authenticationDao.login(loginRequest)
+
+        // TODO - formalize and expand on this
+        authResult.User = {
+            Id: loginRequest.username
+        }
+
+        return authResult
     }
 
     async logout(logoutRequest) {
